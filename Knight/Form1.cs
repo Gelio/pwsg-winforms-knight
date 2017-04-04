@@ -10,17 +10,70 @@ using System.Windows.Forms;
 
 namespace Knight
 {
+    enum KnightDirection
+    {
+        Left,
+        Right
+    }
+
     public partial class Form1 : Form
     {
         private int gameRows = 8;
         private int gameColumns = 8;
         private Settings settings;
+        private int playerX = 0;
+        private int playerY = 0;
+        private KnightDirection knightDirection = KnightDirection.Right;
+        private PictureBox knight;
+
+        private Bitmap knightBitmapLeft = Properties.Resources.knight2;
+        private Bitmap knightBitmapRight = Properties.Resources.knight;
 
         public Form1()
         {
             InitializeComponent();
             settings = new Settings();
+            knight = new PictureBox();
+            knightBitmapLeft.MakeTransparent(Color.White);
+            knightBitmapRight.MakeTransparent(Color.White);
+
+            knight.SizeMode = PictureBoxSizeMode.StretchImage;
+            knight.Dock = DockStyle.Fill;
+
             ResetGameMap();
+        }
+
+        private void PlaceKnight()
+        {
+            knight.Image = knightDirection == KnightDirection.Left ? knightBitmapLeft : knightBitmapRight;
+            Panel panel = gameMap.GetControlFromPosition(playerX, playerY) as Panel;
+            panel.Controls.Add(knight);
+        }
+
+        private void SetInitialKnightPosition()
+        {
+            for (int x = 0; x < gameColumns; x++)
+            {
+                for (int y=0; y < gameRows; y++)
+                {
+                    if (IsPositionValid(x, y))
+                    {
+                        playerX = x;
+                        playerY = y;
+                        break;
+                    }
+                }
+            }
+        }
+
+        private bool IsPositionValid(int x, int y)
+        {
+            if (x < 0 || x >= gameColumns)
+                return false;
+            if (y < 0 || y >= gameRows)
+                return false;
+
+            return gameMap.GetControlFromPosition(x, y).BackColor == Color.ForestGreen;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -67,9 +120,11 @@ namespace Knight
                     panel.BackColor = r.Next(2) == 0 ? Color.Maroon : Color.ForestGreen;
                     panel.Dock = DockStyle.Fill;
                     gameMap.Controls.Add(panel, x, y);
-                    
                 }
             }
+
+            SetInitialKnightPosition();
+            PlaceKnight();
 
             gameMap.CellPaint += GameMap_CellPaint;
         }
@@ -120,6 +175,64 @@ namespace Knight
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ResetGameMap();
+        }
+
+        private bool[] isArrowKeyDown = new bool[4];
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+            bool knightMoved = false;
+            if (e.KeyCode == Keys.Right && !isArrowKeyDown[0])
+            {
+                isArrowKeyDown[0] = true;
+                knightDirection = KnightDirection.Right;
+                knightMoved = true;
+                if (IsPositionValid(playerX + 1, playerY))
+                    playerX++;
+                
+            }
+            else if (e.KeyCode == Keys.Left && !isArrowKeyDown[1])
+            {
+                isArrowKeyDown[1] = true;
+                knightDirection = KnightDirection.Left;
+                knightMoved = true;
+                if (IsPositionValid(playerX - 1, playerY))
+                    playerX--;
+            }
+            else if (e.KeyCode == Keys.Down && !isArrowKeyDown[2])
+            {
+                isArrowKeyDown[2] = true;
+                if (IsPositionValid(playerX, playerY + 1))
+                {
+                    playerY++;
+                    knightMoved = true;
+                }
+            }
+            else if (e.KeyCode == Keys.Up && !isArrowKeyDown[3])
+            {
+                isArrowKeyDown[3] = true;
+                if (IsPositionValid(playerX, playerY - 1))
+                {
+                    playerY--;
+                    knightMoved = true;
+                }
+            }
+
+            if (knightMoved)
+                PlaceKnight();
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+                isArrowKeyDown[0] = false;
+            else if (e.KeyCode == Keys.Left)
+                isArrowKeyDown[1] = false;
+            else if (e.KeyCode == Keys.Down)
+                isArrowKeyDown[2] = false;
+            else if (e.KeyCode == Keys.Up)
+                isArrowKeyDown[3] = false;
         }
     }
 }
