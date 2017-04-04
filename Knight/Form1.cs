@@ -14,10 +14,12 @@ namespace Knight
     {
         private int gameRows = 8;
         private int gameColumns = 8;
+        private Settings settings;
 
         public Form1()
         {
             InitializeComponent();
+            settings = new Settings();
             ResetGameMap();
         }
 
@@ -82,6 +84,18 @@ namespace Knight
                 e.Graphics.FillRectangle(b, e.CellBounds);
             }
         }
+        
+        private void ShowSettings()
+        {
+            if (settings.ShowDialog() == DialogResult.Cancel)
+                return;
+
+            BoardSize boardSize = settings.BoardSize;
+            gameRows = boardSize.rows;
+            gameColumns = boardSize.columns;
+            ResetGameMap();
+        }
+
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == (Keys.Control | Keys.N))
@@ -91,11 +105,21 @@ namespace Knight
             }
             else if (keyData == (Keys.Control | Keys.M))
             {
-#warning TODO: menu
+                ShowSettings();
                 return true;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowSettings();
+        }
+
+        private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResetGameMap();
         }
     }
 }
