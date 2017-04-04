@@ -1,0 +1,59 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><META http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>
+
+	
+	<div>    
+		<h4>The Knight - part 1</h4>
+		<ul>
+			<li><a href="TheKnightLab.exe" target="_blank">Example application</a></li>
+			<li><a href="ResourcesLab.zip" target="_blank">Resources</a></li> 
+			<li>4 points: 
+				<ul>
+					<li>Change window's title</li>
+					<li>Starting position: center of the screen</li>
+					<li>The window has fixed size, but you can maximize it.</li>
+					<li>All controls update their size after maximization.</li>
+					<li>You should add menu bar with "File" button, which has submenus "New game", "Settings" and "Exit"</li>
+					<li>Board: 64 cells. Each cell has one of the following colors: ForestGreen or Maroon. Colors are choosen at random.</li>
+					<li>"New game" button creates new board. It has shortcut: ctrl+N.</li>
+					<li>"Exit" button closes the application.</li>
+					<li>Before closing the application confirmation window appears. When confirmation window is shown, the main window is inactive.</li>
+					<li>"Settings" button opens Settings window. Shortcut: ctrl+M</li>
+					<li>Settings window:
+						<ul>
+							<li> A new window which contains a combobox, which allows to change board's size (8x8,10x10,12x12). Combobox's default value: 8x8.</li>
+							<li> Settings window has also "OK" and "Cancel" buttons. After clicking "Cancel" changes are not taken into consideration.</li>
+							<li> Settings window cannot change size, it does not have maximize an minimize buttons.</li> 
+							<li> Settings appears in the centre of the main window.</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>8 points:
+				<ul>
+					<li>The knight image (image is loaded from resources).</li>
+					<li>You can move the knight using arrow keys.</li>
+					<li>After holding an arrow key, the knigt moves only by one cell</li>
+					<li>The knight rotates after changing direction (left/right).</li>
+					<li>The knight cannot move into walls (cells in Maroon color).</li>
+					<li>After the beginning of a new game or changing size of the board, the knight cannot be placed in the wall (it should appear on ForestGreen cell).</li>
+					<li>The knight background is transparent.</li>
+				</ul>
+			</li>
+			<li>Hints: 
+				<ul>
+					<li>Control.Dock, Control.Anchor</li>
+					<li>TableLayoutPanel</li>
+					<li>PictureBox</li>
+					<li>DialogResult</li>
+					<li>Bitmap.MakeTransparent</li>
+					<li>ImageLayout.Stretch</li>
+				</ul>
+			</li>
+		</ul>
+		<li><b>It is not possible to get points without fulfilling all requirements</b></li>
+		<li><b>The application should behave like the example</b></li>
+		</ul>
+		
+	
+</div></body></html>
